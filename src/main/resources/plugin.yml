@@ -1,0 +1,6 @@
+name: bio
+version: '${project.version}'
+main: ru.freen.bio.main.Main
+api-version: '1.16'
+commands:
+  bio:
