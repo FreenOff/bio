@@ -9,7 +9,7 @@ public class PlayerJoin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
-        if(!MySQL.playerExists(event.getPlayer().getName()))
+        if(!MySQL.playerExists(event.getPlayer().getName()).join())
             MySQL.addPlayer(event.getPlayer().getName(), "null");
 
     }

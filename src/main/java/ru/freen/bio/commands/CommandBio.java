@@ -56,7 +56,7 @@ public class CommandBio implements CommandExecutor {
                 commandSender.sendMessage(Color.parser("&aУспешно!"));
             }
         }else if(strings[0].equalsIgnoreCase("do")) {
-            if(!MySQL.playerExists(commandSender.getName()) || MySQL.getPlayerBiography(commandSender.getName()).equalsIgnoreCase("null")){
+            if(!MySQL.playerExists(commandSender.getName()).join() || MySQL.getPlayerBiography(commandSender.getName()).join().equalsIgnoreCase("null")){
                 commandSender.sendMessage(Color.parser("&4Ошибка: &cУ вас отсутствует краткая биография. Подать заявку: /bio <краткое описание персонажа>"));
                 return true;
             }
