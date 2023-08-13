@@ -56,11 +56,17 @@ public class CommandBio implements CommandExecutor {
                 commandSender.sendMessage(Color.parser("&aУспешно!"));
             }
         }else if(strings[0].equalsIgnoreCase("do")) {
-            if(!MySQL.playerExists(commandSender.getName()).join() || MySQL.getPlayerBiography(commandSender.getName()).join().equalsIgnoreCase("null")){
-                commandSender.sendMessage(Color.parser("&4Ошибка: &cУ вас отсутствует краткая биография. Подать заявку: /bio <краткое описание персонажа>"));
-                return true;
-            }
-            ((Player)commandSender).performCommand("/do "+MySQL.getPlayerBiography(commandSender.getName()));
+            MySQL.playerExists(commandSender.getName()).thenAccept(hasPlayerInDb -> {
+                MySQL.getPlayerBiography(commandSender.getName()).thenAccept(bioPlayer -> {
+                    if (hasPlayerInDb || bioPlayer.equalsIgnoreCase("null")) {
+                        commandSender.sendMessage(Color.parser("&4Ошибка: &cУ вас отсутствует краткая биография. Подать заявку: /bio <краткое описание персонажа>"));
+                        return;
+                    }
+                    Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                        ((Player) commandSender).performCommand("/do " + bioPlayer);
+                    });
+                });
+            });
             return true;
         }else if(strings[0].equalsIgnoreCase("list")){
             Inventory inv = Bukkit.createInventory(null, 54, Color.parser("&6&lBIO &0&l|| Заявки"));

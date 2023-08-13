@@ -11,9 +11,11 @@ import java.util.HashMap;
 public final class Main extends JavaPlugin {
 
     public static HashMap<Player, String> bid = new HashMap<Player, String>();
+    private static Main plugin;
 
     @Override
     public void onEnable() {
+        plugin=this;
         saveDefaultConfig();
         MySQL.connect(getConfig().getString("MySQL.jdbc"),getConfig().getString("MySQL.username"), getConfig().getString("MySQL.password"));
         MySQL.createPlayersTable();
@@ -25,5 +27,10 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         MySQL.executorService.shutdown();
+        MySQL.closeConnectionPool();
+    }
+
+    public static Main getInstance(){
+        return plugin;
     }
 }
